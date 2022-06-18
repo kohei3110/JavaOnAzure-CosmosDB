@@ -19,9 +19,10 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        - run: export COSMOSDB_ENDPOINT=${{ secrets.COSMOSDB_ENDPOINT }}
-        - run: export COSMOSDB_KEY=${{ secrets.COSMOSDB_KEY }}
-        - run: mvn clean install
+        run: mvn clean install
+        env:
+          COSMOSDB_ENDPOINT: ${{ secrets.COSMOSDB_ENDPOINT }}
+          COSMOSDB_KEY: ${{ secrets.COSMOSDB_KEY }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
