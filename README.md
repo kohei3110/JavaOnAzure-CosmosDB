@@ -10,4 +10,4 @@
 
     - Just click the below bottun
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/)
+[![Deploy to Azure](https%3A%2F%2Fraw.githubusercontent.com%2Fkohei3110%2FJavaOnAzure-CosmosDB%2Fmaster%2Fazure%2Ftemplate.json)
