@@ -53,11 +53,11 @@
                 "siteConfig": {
                     "appSettings": [
                         {
-                            "name": "CosmosDbEndpoint",
+                            "name": "COSMOSDB_ENDPOINT",
                             "value": ""
                         },
                         {
-                            "name": "AuthorizationKey",
+                            "name": "COSMOSDB_KEY",
                             "value": ""
                         }
                     ],
@@ -88,11 +88,11 @@
                 "siteConfig": {
                     "appSettings": [
                         {
-                            "name": "CosmosDbEndpoint",
+                            "name": "COSMOSDB_ENDPOINT",
                             "value": ""
                         },
                         {
-                            "name": "AuthorizationKey",
+                            "name": "COSMOSDB_KEY",
                             "value": ""
                         }
                     ],
@@ -110,7 +110,25 @@
             }
         },
         {
-            "name": "[parameters('cosmosAccountName')]",
+            "name": "[concat(parameters('cosmosAccountName'), '-dev')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2021-05-15",
+            "location": "[variables('location')]",
+            "tags": {},
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "locations": [
+                    {
+                        "locationName": "[variables('location')]",
+                        "failoverPriority": 0
+                    }
+                ],
+                "databaseAccountOfferType": "Standard",
+                "capabilities": []
+            }
+        },
+        {
+            "name": "[concat(parameters('cosmosAccountName'), '-prod')]",
             "type": "Microsoft.DocumentDB/databaseAccounts",
             "apiVersion": "2021-05-15",
             "location": "[variables('location')]",
