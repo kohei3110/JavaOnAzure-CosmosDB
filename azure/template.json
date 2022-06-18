@@ -1,0 +1,150 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "Web アプリの名前"
+            }
+        },
+        "cosmosAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Cosmos DB アカウントの名前"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "planName": "[concat('plan-', parameters('webAppName'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('planName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "location": "[variables('location')]",
+            "kind": "",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard"
+            },
+            "properties": {
+                "name": "[variables('planName')]",
+                "workerSize": "3",
+                "workerSizeId": "3",
+                "numberOfWorkers": 1,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "name": "[concat(parameters('webAppName'), '-dev')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+            ],
+            "properties": {
+                "name": "[concat(parameters('webAppName'), '-dev')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "COSMOSDB_ENDPOINT",
+                            "value": ""
+                        },
+                        {
+                            "name": "COSMOSDB_KEY",
+                            "value": ""
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "java"
+                        }
+                    ],
+                    "minTlsVersion": "1.2",
+                    "javaVersion": "11",
+                    "javaContainer": "JAVA",
+                    "javaContainerVersion": "JAVA:11-java11"
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('webAppName'), '-prod')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+            ],
+            "properties": {
+                "name": "[concat(parameters('webAppName'), '-prod')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "COSMOSDB_ENDPOINT",
+                            "value": ""
+                        },
+                        {
+                            "name": "COSMOSDB_KEY",
+                            "value": ""
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "java"
+                        }
+                    ],
+                    "minTlsVersion": "1.2",
+                    "javaVersion": "11",
+                    "javaContainer": "JAVA",
+                    "javaContainerVersion": "JAVA:11-java11"
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('cosmosAccountName'), '-dev')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2021-05-15",
+            "location": "[variables('location')]",
+            "tags": {},
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "locations": [
+                    {
+                        "locationName": "[variables('location')]",
+                        "failoverPriority": 0
+                    }
+                ],
+                "databaseAccountOfferType": "Standard",
+                "capabilities": []
+            }
+        },
+        {
+            "name": "[concat(parameters('cosmosAccountName'), '-prod')]",
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2021-05-15",
+            "location": "[variables('location')]",
+            "tags": {},
+            "kind": "GlobalDocumentDB",
+            "properties": {
+                "locations": [
+                    {
+                        "locationName": "[variables('location')]",
+                        "failoverPriority": 0
+                    }
+                ],
+                "databaseAccountOfferType": "Standard",
+                "capabilities": []
+            }
+        }
+    ],
+    "outputs": {}
+}

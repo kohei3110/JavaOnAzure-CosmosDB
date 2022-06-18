@@ -2,12 +2,12 @@ name: Build and deploy JAR app to Azure Web App - app-javaonazure-cosmosdb-kohei
 
 on:
   push:
-    branches:
+    branches-ignore:
       - master
   workflow_dispatch:
 
 jobs:
-  build:
+  build-dev:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,9 +30,9 @@ jobs:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
 
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-dev
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -47,7 +47,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'app-javaonazure-cosmosdb-kohei3110-prod'
+          app-name: 'app-javaonazure-cosmosdb-kohei3110-dev'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PROD }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
           package: '*.jar'
