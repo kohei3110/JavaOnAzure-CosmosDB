@@ -21,8 +21,8 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         env:
-          COSMOSDB_ENDPOINT: ${{ secrets.COSMOSDB_ENDPOINT }}
-          COSMOSDB_KEY: ${{ secrets.COSMOSDB_KEY }}
+          COSMOSDB_ENDPOINT: ${{ secrets.COSMOSDB_ENDPOINT_PROD }}
+          COSMOSDB_KEY: ${{ secrets.COSMOSDB_KEY_PROD }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

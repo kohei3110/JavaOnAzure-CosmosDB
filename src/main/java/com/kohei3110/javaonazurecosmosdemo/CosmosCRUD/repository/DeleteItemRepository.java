@@ -13,9 +13,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.model.Item;
-
-import reactor.core.publisher.Mono;
 
 public class DeleteItemRepository {
     private CosmosClient cosmosClient;
