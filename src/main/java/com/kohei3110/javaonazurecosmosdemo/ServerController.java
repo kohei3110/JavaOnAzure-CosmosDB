@@ -3,8 +3,6 @@ package com.kohei3110.javaonazurecosmosdemo;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.Factory;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.model.Item;
@@ -32,12 +30,12 @@ import reactor.core.publisher.Mono;
 @SpringBootApplication
 @RestController
 @ComponentScan("{com.kohei3110.javaonazureblobdemo.CosmosCRUD}")
-public class Controller {
+public class ServerController {
 
-	Logger logger = Logger.getLogger(Controller.class.getName());
+	Logger logger = Logger.getLogger(ServerController.class.getName());
 	
 	public static void main(String[] args) {
-		SpringApplication.run(Controller.class, args);
+		SpringApplication.run(ServerController.class, args);
 	}
 
 	Factory factory = new Factory();

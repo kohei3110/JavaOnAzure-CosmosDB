@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index page</title>
+</head>
+<body>
+    ★以下に検索されたデータが表示されます
+    <table border="0">
+        <tr>
+            <td align="left" valign="top">ID: </td>
+            <td th:text="${item.id}"></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top">名前</td>
+            <td th:text="|${item.name}"></td>
+        </tr>
+    </table>
+</body>
+</html>
