@@ -32,12 +32,14 @@ public class DeleteItemRepository {
             this.cosmosClient = new CosmosClientBuilder()
                 .endpoint(System.getenv("COSMOSDB_ENDPOINT"))
                 .key(System.getenv("COSMOSDB_KEY"))
+                .contentResponseOnWriteEnabled(true)
                 .buildClient();
             this.cosmosDatabase = this.cosmosClient.getDatabase(DATABASE_ID);
             this.cosmosContainer = this.cosmosDatabase.getContainer(CONTAINER_ID);
             this.cosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(System.getenv("COSMOSDB_ENDPOINT"))
                 .key(System.getenv("COSMOSDB_KEY"))
+                .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();
             this.cosmosAsyncDatabase = this.cosmosAsyncClient.getDatabase(DATABASE_ID);
             this.cosmosAsyncContainer = this.cosmosAsyncDatabase
