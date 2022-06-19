@@ -42,3 +42,7 @@
 | `COSMOSDB_KEY_PROD` | **本番**環境にデプロイされた Cosmos DB プライマリキー |
 
 Refs: [App Service アプリを構成する](https://docs.microsoft.com/ja-jp/azure/app-service/configure-common?tabs=portal)
+
+## UML 図
+
+<img src="images/javaonazurecosmosdemo.urm.png" />
