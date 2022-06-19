@@ -42,3 +42,7 @@ Refs:
 | `COSMOSDB_KEY_PROD` | A primary key for Cosmos DB **prod**. |
 
 Refs: [Configure an App Service app](https://docs.microsoft.com/en-us/azure/app-service/configure-common?tabs=portal)
+
+## UML Diagram
+
+<img src="images/javaonazurecosmosdemo.urm.png" />
