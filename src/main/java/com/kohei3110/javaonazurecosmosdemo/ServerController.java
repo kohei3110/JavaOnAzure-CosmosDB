@@ -42,9 +42,15 @@ public class ServerController {
 
 	@PostMapping("items/sync")
 	public CosmosItemResponse<Item> createItemSync(@RequestBody Item item) throws Exception {
+        long start = System.currentTimeMillis();
+        logger.info("=====ServiceController Start=====");
 		CreateItemService createItemService = factory.injectCreateItemService();
 		try {
-			return createItemService.requestCosmosDBSync(item);
+			CosmosItemResponse<Item> response = createItemService.requestCosmosDBSync(item);
+			long end = System.currentTimeMillis();
+			logger.info("=====ServiceController End=====");
+			logger.info("It took " + (end - start) + " ms in ServiceController");	
+			return response;
 		} catch (Exception e) {
 			logger.warning(e.getMessage());
 			throw new Exception("create item operation has failed");
@@ -53,9 +59,15 @@ public class ServerController {
 
 	@PostMapping("/items/async")
 	public Mono<CosmosItemResponse<Item>> createItemAsync(@RequestBody Item item) throws Exception {
+        long start = System.currentTimeMillis();
+        logger.info("=====ServiceController Start=====");
 		CreateItemService createItemService = factory.injectCreateItemService();
 		try {
-			return createItemService.requestCosmosDBAsync(item);
+			Mono<CosmosItemResponse<Item>> response = createItemService.requestCosmosDBAsync(item);
+			long end = System.currentTimeMillis();
+			logger.info("=====ServiceController End=====");
+			logger.info("It took " + (end - start) + " ms in ServiceController");	
+			return response;
 		} catch (Exception e) {
 			logger.warning(e.getMessage());
 			throw new Exception("create item operation has failed");

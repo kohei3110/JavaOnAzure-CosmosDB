@@ -53,7 +53,13 @@ public class CreateItemRepository {
 
     public CosmosItemResponse<Item> createItemSync(Item item) throws Exception {
         try {
-            return cosmosContainer.createItem(item);
+            long start = System.currentTimeMillis();
+            logger.info("=====CreateItemRepository Start=====");
+            CosmosItemResponse<Item> response = cosmosContainer.createItem(item);
+            long end = System.currentTimeMillis();
+            logger.info("=====CreateItemRepository End=====");
+            logger.info("It took " + (end - start) + " ms in CreateIte");
+            return response;
         } catch (Exception e) {
             logger.warning(e.getMessage());
             throw new Exception("create item operation has failed");
@@ -62,7 +68,13 @@ public class CreateItemRepository {
 
     public Mono<CosmosItemResponse<Item>> createItemAsync(Item item) throws Exception {
         try {
-            return cosmosAsyncContainer.createItem(item);
+            long start = System.currentTimeMillis();
+            logger.info("=====CreateItemRepository Start=====");
+            Mono<CosmosItemResponse<Item>> response = cosmosAsyncContainer.createItem(item);
+            long end = System.currentTimeMillis();
+            logger.info("=====CreateItemRepository End=====");
+            logger.info("It took " + (end - start) + " ms in CreateItemRepository");
+            return response;
         } catch (Exception e) {
             logger.warning(e.getMessage());
             throw new Exception("create item operation has failed");
