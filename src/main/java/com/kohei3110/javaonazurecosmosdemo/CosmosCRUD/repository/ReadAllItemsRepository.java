@@ -49,8 +49,8 @@ public class ReadAllItemsRepository {
             this.cosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(System.getenv("COSMOSDB_ENDPOINT"))
                 .key(System.getenv("COSMOSDB_KEY"))
-                // .gatewayMode()
-                .directMode()
+                .gatewayMode()
+                // .directMode()
                 .buildAsyncClient();
             this.cosmosAsyncDatabase = this.cosmosAsyncClient.getDatabase(DATABASE_ID);
             this.cosmosAsyncContainer = this.cosmosAsyncDatabase.getContainer(CONTAINER_ID);
