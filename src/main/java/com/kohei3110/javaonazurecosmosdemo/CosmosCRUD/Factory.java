@@ -2,11 +2,13 @@ package com.kohei3110.javaonazurecosmosdemo.CosmosCRUD;
 
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.CreateItemRepository;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.DeleteItemRepository;
+import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.PatchItemRepository;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.ReadAllItemsRepository;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.ReadItemRepository;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository.UpdateItemRepository;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.CreateItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.DeleteItemService;
+import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.PatchItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.ReadAllItemsService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.ReadItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.UpdateItemService;
@@ -23,6 +25,8 @@ public class Factory {
     private UpdateItemService updateItemService;
     private DeleteItemRepository deleteItemRepository;
     private DeleteItemService deleteItemService;
+    private PatchItemRepository patchItemRepository;
+    private PatchItemService patchItemService;
 
     public Factory(){
         this.createItemRepository = new CreateItemRepository();
@@ -35,6 +39,8 @@ public class Factory {
         this.updateItemService = new UpdateItemService(this.updateItemRepository);
         this.deleteItemRepository = new DeleteItemRepository();
         this.deleteItemService = new DeleteItemService(this.deleteItemRepository);
+        this.patchItemRepository = new PatchItemRepository();
+        this.patchItemService = new PatchItemService(this.patchItemRepository);
     }
 
     public CreateItemService injectCreateItemService() {
@@ -55,5 +61,9 @@ public class Factory {
 
     public DeleteItemService injDeleteItemService() {
         return this.deleteItemService;
+    }
+
+    public PatchItemService injectPatchItemService() {
+        return this.patchItemService;
     }
 }
