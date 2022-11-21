@@ -1,6 +1,5 @@
 package com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.repository;
 
-import java.time.Duration;
 import java.util.logging.Logger;
 
 import com.azure.cosmos.CosmosAsyncClient;
@@ -11,14 +10,13 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.PartitionKey;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.model.Item;
 
-import reactor.core.publisher.Mono;
-
-public class CreateItemRepository {
+public class PatchItemRepository {
     
     private CosmosClient cosmosClient;
     private CosmosDatabase  cosmosDatabase;
@@ -31,30 +29,20 @@ public class CreateItemRepository {
     private static final String CONTAINER_ID = "Items";
 
     Logger logger = Logger.getLogger(CreateItemRepository.class.getName());
-
-    public CreateItemRepository() {
-        // 直接モード
-        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-        directConnectionConfig.setMaxConnectionsPerEndpoint(120);
-        directConnectionConfig.setIdleEndpointTimeout(Duration.ofMillis(100));
+    
+    public PatchItemRepository() {
         try {
             this.cosmosClient = new CosmosClientBuilder()
                 .endpoint(System.getenv("COSMOSDB_ENDPOINT"))
                 .key(System.getenv("COSMOSDB_KEY"))
                 .contentResponseOnWriteEnabled(true)
-                .directMode(directConnectionConfig)
                 .buildClient();
             this.cosmosDatabase = this.cosmosClient.getDatabase(DATABASE_ID);
             this.cosmosContainer = this.cosmosDatabase.getContainer(CONTAINER_ID);
-        // ゲートウェイモード
-        GatewayConnectionConfig gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
-        gatewayConnectionConfig.setMaxConnectionPoolSize(150);
-        gatewayConnectionConfig.setIdleConnectionTimeout(Duration.ofSeconds(3));
             this.cosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(System.getenv("COSMOSDB_ENDPOINT"))
                 .key(System.getenv("COSMOSDB_KEY"))
                 .contentResponseOnWriteEnabled(true)
-                .gatewayMode(gatewayConnectionConfig)
                 .buildAsyncClient();
             this.cosmosAsyncDatabase = this.cosmosAsyncClient.getDatabase(DATABASE_ID);
             this.cosmosAsyncContainer = this.cosmosAsyncDatabase
@@ -64,21 +52,11 @@ public class CreateItemRepository {
         }
     }
 
-    public CosmosItemResponse<Item> createItemSync(Item item) throws Exception {
-        try {
-            return cosmosContainer.createItem(item);
-        } catch (Exception e) {
-            logger.warning(e.getMessage());
-            throw new Exception("create item operation has failed");
+    public CosmosItemResponse<Item> requestCosmosDB(Item item) {
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        if (!StringUtils.isEmpty(item.getName())) {
+            cosmosPatchOperations.add("/name", item.getName());
         }
-    }
-
-    public Mono<CosmosItemResponse<Item>> createItemAsync(Item item) throws Exception {
-        try {
-            return cosmosAsyncContainer.createItem(item);
-        } catch (Exception e) {
-            logger.warning(e.getMessage());
-            throw new Exception("create item operation has failed");
-        }
+        return this.cosmosContainer.patchItem(item.getId(), new PartitionKey(item.getId()), cosmosPatchOperations, Item.class);
     }
 }

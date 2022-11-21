@@ -8,6 +8,7 @@ import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.Factory;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.model.Item;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.CreateItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.DeleteItemService;
+import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.PatchItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.ReadAllItemsService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.ReadItemService;
 import com.kohei3110.javaonazurecosmosdemo.CosmosCRUD.service.UpdateItemService;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -151,5 +153,12 @@ public class ServerController {
 			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+	}
+
+	@PatchMapping("/items/sync/")
+	public Item patchItemSync(@RequestBody Item item) {
+		PatchItemService patchItemService = factory.injectPatchItemService();
+		CosmosItemResponse<Item> respose = patchItemService.requestCosmosDBSync(item);
+		return respose.getItem();
 	}
 }
